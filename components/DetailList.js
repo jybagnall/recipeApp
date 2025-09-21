@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function List({ data }) {
+export default function DetailList({ data }) {
   return data.map((dataPoint) => (
     <View key={dataPoint} style={styles.listItem}>
       <Text style={styles.itemText}>{dataPoint}</Text>
