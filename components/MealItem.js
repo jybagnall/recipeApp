@@ -1,12 +1,25 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 
+// 화면 컴포넌트가 아닌 일반 컴포넌트 안에서 이동을 위해서 훅을 씀.
+import { useNavigation } from "@react-navigation/native";
+import MealDetailsInfo from "./MealDetailsInfo";
+
 export default function MealItem({
+  id,
   title,
   imageUrl,
   duration,
   complexity,
   affordability,
 }) {
+  const navigation = useNavigation();
+
+  function handlePress(id) {
+    navigation.navigate("detail", {
+      mealId: id, // params 전달
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -15,17 +28,18 @@ export default function MealItem({
           styles.button,
           pressed && styles.buttonPressed,
         ]}
+        onPress={() => handlePress(id)}
       >
         <View>
           <Image source={{ uri: imageUrl }} style={styles.image} />
         </View>
 
         <Text style={styles.title}>{title}</Text>
-        <View style={styles.details}>
-          <Text style={styles.detailText}>{duration} mins</Text>
-          <Text style={styles.detailText}>{complexity.toUpperCase()}</Text>
-          <Text style={styles.detailText}>{affordability.toUpperCase()}</Text>
-        </View>
+        <MealDetailsInfo
+          duration={duration}
+          complexity={complexity}
+          affordability={affordability}
+        />
       </Pressable>
     </View>
   );
@@ -52,16 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     margin: 8,
   },
-  details: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 4,
-  },
-  detailText: {
-    marginHorizontal: 4,
-    fontSize: 12,
-  },
+
   buttonPressed: {
     opacity: 0.8,
   },
